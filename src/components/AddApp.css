@@ -1,0 +1,22 @@
+.add-app {
+  float: right;
+  background-color: #008CBA; /* Green */
+  border: none;
+  color: white;
+  padding: 12px 28px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 8px;
+  width: auto;
+  margin: 10px;
+}
+
+.valid {
+  color: green;
+}
+
+.invalid {
+  color: red;
+}
