@@ -24,7 +24,15 @@ class App extends Component {
             <Switch>
               <Route exact path="/login" component={Login} />
               <Route exact path="/register" component={Register} />
-              <Route exact path="/" component={TablePasswordManager} />
+              <Route exact path="/" render={
+              (props => {
+                if (localStorage.key) {
+                  return <TablePasswordManager props={props} />
+                } else {
+                  return <Redirect to="/login"/>
+                }
+              })
+            } />
             </Switch>
           </div>
         </Provider>
