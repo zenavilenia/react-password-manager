@@ -18,9 +18,14 @@ class UserStore {
       this.apps = []
       snapshot.forEach(element => {
         const app = { ...element.val(), key: element.key };
+        app.showedPassword = '*'.repeat(app.password.length);
         this.apps.push(app);
       })
     })
+  }
+
+  showPassword = (index) => {
+    this.apps[index].showedPassword = this.apps[index].password;
   }
 
   editApp = (appkey, objApp) => {
@@ -46,7 +51,7 @@ class UserStore {
           console.log(element)
           localStorage.setItem('key', element.key);
           localStorage.setItem('email', user.email);
-          this.user = objUser.email;
+          this.user = objUser;
         }
       })
     })

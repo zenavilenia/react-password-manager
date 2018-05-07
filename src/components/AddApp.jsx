@@ -120,7 +120,7 @@ class AddApp extends Component {
           contentLabel="Example Modal"
         >
           <h2 ref={subtitle => this.subtitle = subtitle}>Add New App</h2>
-          <form onSubmit={(e) => {this.addApp(); e.preventDefault();}}>
+          <form onSubmit={(e) => {this.addApp(); this.closeModal(); e.preventDefault();}}>
             <div className="container">
               <label><b>App</b></label>
               <input type="text" placeholder="App's name" name="app" value={ this.state.app } onChange={ this.handleChange } required/>

@@ -25,10 +25,12 @@ Modal.setAppElement('#root')
     super();
     this.state = {
       modalIsOpen: false,
+      modalCheckPwdIsOpen: false,
       key: '',
       app: '',
       username: '',
       password: '',
+      index: '',
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -127,21 +129,29 @@ Modal.setAppElement('#root')
     this.setState({modalIsOpen: false});
   }
 
-  hidePassword(appkey, pwd) {
-    console.log('masuk')
-    let app = document.getElementById(appkey);
-    if(app) {
-      if(app.className === "show-password") {
-        console.log('masukkk')
-        app.value = pwd;
-      } else {
-        return app.value = '*'.repeat(pwd.length);
-      }
-    } else {
-      return '*'.repeat(pwd.length);
-    }
+  openModalCheckPwd() {
+    this.setState({modalCheckPwdIsOpen: true});
+  }
 
-    console.log(app.value)
+  afterOpenModalCheckPwd() {
+    // references are now sync'd and can be accessed.
+    // this.subtitle.style.color = '#f00';
+  }
+
+  closeModalCheckPwd() {
+    this.setState({modalCheckPwdIsOpen: false});
+  }
+
+  checkOpenPwd() {
+    if(this.password === UserStore.user.password) {
+      UserStore.showPassword(this.state.index);
+    }
+  }
+
+  changeIndex(i) {
+    this.setState({
+      index: i
+    })
   }
 
   render() {
@@ -165,8 +175,8 @@ Modal.setAppElement('#root')
                 <th> { i+1 } </th>
                 <th> { app.app } </th>
                 <th> { app.username } </th>
-                <th> <p id={ app.key }> { this.hidePassword(app.key, app.password) } </p> </th>
-                <th> <a href="" onClick={ (e) => { this.showPassword(app.key, app.password); e.preventDefault(); }}>Show Password</a> </th>
+                <th> { app.showedPassword } </th>
+                <th> <a href="" onClick={ (e) => { this.changeIndex(i); this.openModalCheckPwd(); e.preventDefault(); }}>Show Password</a> </th>
                 <th> <a href="" onClick={ (e) => { this.editState(app.key, app.app, app.username, app.password); this.openModal(); e.preventDefault(); }}>Edit</a> |
                     <a href="" onClick={ (e) => { UserStore.deleteApp(app.key); e.preventDefault(); }}>delete</a>
                 </th>
@@ -205,6 +215,24 @@ Modal.setAppElement('#root')
           </div>
           <hr/>
           <button onClick={this.closeModal}>close</button>
+        </Modal>
+
+        <Modal
+          isOpen={this.state.modalCheckPwdIsOpen}
+          onAfterOpen={this.afterOpenModalCheckPwd}
+          onRequestClose={this.closeModalCheckPwd}
+          style={customStyles}
+          contentLabel="Modal Check Password"
+        >
+          <form onSubmit={(e) => {this.checkOpenPwd(); this.closeModalCheckPwd(); e.preventDefault();}}>
+            <div className="container">
+              <label><b>Password</b></label>
+              <input type="password" placeholder="Your password" name="password" value={ this.state.password } onChange={ this.handleChange } required/>
+              <button type="submit">Show Password</button>
+            </div>
+          </form>
+          <hr/>
+          <button onClick={this.closeModalCheckPwd}>close</button>
         </Modal>
       </div>
     );
