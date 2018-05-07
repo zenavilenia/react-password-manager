@@ -3,6 +3,7 @@ import { Provider } from 'mobx-react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import UserStore from './stores/UserStore';
 import logo from './logo.svg';
+import DevTools from 'mobx-react-devtools';
 
 import './App.css';
 import Navbar from './components/Navbar';
@@ -34,6 +35,7 @@ class App extends Component {
               })
             } />
             </Switch>
+            <DevTools/>
           </div>
         </Provider>
       </Router>

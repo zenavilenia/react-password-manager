@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
 
+import Search from './Search.jsx';
 import UserStore from '../stores/UserStore';
 import './AddApp.css';
 
@@ -14,8 +15,6 @@ const customStyles = {
     transform             : 'translate(-50%, -50%)'
   }
 };
-
-Modal.setAppElement('#root')
 
 class AddApp extends Component {
   constructor() {
@@ -111,7 +110,12 @@ class AddApp extends Component {
   render() {
     return (
       <div>
-        <button className="add-app" onClick={ this.openModal }>Add App</button>
+        <div className="left">
+          <Search/>
+        </div>
+        <div className="right">
+          <button className="add-app" onClick={ this.openModal }>Add App</button>
+        </div>
         <Modal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}

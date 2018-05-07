@@ -17,7 +17,7 @@ const customStyles = {
   }
 };
 
-Modal.setAppElement('#root')
+Modal.setAppElement('.App')
 
 @inject('UserStore')
 @observer class TablePasswordManager extends Component {
@@ -52,48 +52,50 @@ Modal.setAppElement('#root')
   }
 
   handleChangePassword = (e) => {
-    this.handleChange(e);
-
     let uppercase = document.getElementById('uppercase');
     let lowercase = document.getElementById('lowercase');
     let specialcase = document.getElementById('specialcase');
     let number = document.getElementById('number');
     let minimaldigit = document.getElementById('minimaldigit');
-    
-    let upperCaseTest = /[A-Z]/g;
-    if (this.state.password.match(upperCaseTest)) { 
-      uppercase.classList = "valid";
-    } else {
-      uppercase.classList = "invalid";
-    }
 
-    let lowerCaseTest = /[a-z]/g;
-    if (this.state.password.match(lowerCaseTest)) { 
-      lowercase.classList = "valid";
-    } else {
-      lowercase.classList = "invalid";
-    }
+    this.setState({
+      [e.target.name]: e.target.value,
+    }, () => {
+      let upperCaseTest = /[A-Z]/g;
+      if (this.state.password.match(upperCaseTest)) { 
+        uppercase.classList = "valid";
+      } else {
+        uppercase.classList = "invalid";
+      }
 
-    let specialCaseTest = /[$&+,:;=?@#|'<>.^*()%!-]/g;
-    if (this.state.password.match(specialCaseTest)) { 
-      specialcase.classList = "valid";
-    } else {
-      specialcase.classList = "invalid";
-    }
+      let lowerCaseTest = /[a-z]/g;
+      if (this.state.password.match(lowerCaseTest)) { 
+        lowercase.classList = "valid";
+      } else {
+        lowercase.classList = "invalid";
+      }
 
-    let numberTest = /[0-9]/g;
-    if (this.state.password.match(numberTest)) { 
-      number.classList = "valid";
-    } else {
-      number.classList = "invalid";
-    }
+      let specialCaseTest = /[$&+,:;=?@#|'<>.^*()%!-]/g;
+      if (this.state.password.match(specialCaseTest)) { 
+        specialcase.classList = "valid";
+      } else {
+        specialcase.classList = "invalid";
+      }
 
-    let minimalDigitTest = /^.{6,}$/g;
-    if (this.state.password.match(minimalDigitTest)) { 
-      minimaldigit.classList = "valid";
-    } else {
-      minimaldigit.classList = "invalid";
-    }
+      let numberTest = /[0-9]/g;
+      if (this.state.password.match(numberTest)) { 
+        number.classList = "valid";
+      } else {
+        number.classList = "invalid";
+      }
+
+      let minimalDigitTest = /^.{6,}$/g;
+      if (this.state.password.match(minimalDigitTest)) { 
+        minimaldigit.classList = "valid";
+      } else {
+        minimaldigit.classList = "invalid";
+      }
+    })
   }
 
   editApp() {
@@ -142,16 +144,22 @@ Modal.setAppElement('#root')
     this.setState({modalCheckPwdIsOpen: false});
   }
 
-  checkOpenPwd() {
-    if(this.password === UserStore.user.password) {
-      UserStore.showPassword(this.state.index);
-    }
+  checkOpenPwd = (pwd) => {
+    UserStore.checkPassword(pwd, this.state.index)
   }
 
   changeIndex(i) {
     this.setState({
       index: i
     })
+  }
+
+  dateFormat (times) {
+    let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    let date = new Date(times).getDate()
+    let month = new Date(times).getMonth()
+    let year = new Date(times).getFullYear()
+    return (date < 10)? `0${date} ${months[month]} ${year}`: `${date} ${months[month]} ${year}`
   }
 
   render() {
@@ -165,8 +173,9 @@ Modal.setAppElement('#root')
               <th>App</th>
               <th>Username</th>
               <th>Password</th>
-              <th>---</th>
-              <th>---</th>
+              <th>Created At</th>
+              <th>Updated At</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -176,9 +185,18 @@ Modal.setAppElement('#root')
                 <th> { app.app } </th>
                 <th> { app.username } </th>
                 <th> { app.showedPassword } </th>
-                <th> <a href="" onClick={ (e) => { this.changeIndex(i); this.openModalCheckPwd(); e.preventDefault(); }}>Show Password</a> </th>
-                <th> <a href="" onClick={ (e) => { this.editState(app.key, app.app, app.username, app.password); this.openModal(); e.preventDefault(); }}>Edit</a> |
-                    <a href="" onClick={ (e) => { UserStore.deleteApp(app.key); e.preventDefault(); }}>delete</a>
+                <th> { this.dateFormat( app.createdAt ) } </th>
+                <th> { this.dateFormat( app.updatedAt ) } </th>
+                <th>
+                  <a href="" onClick={ (e) => { this.changeIndex(i); this.openModalCheckPwd(); e.preventDefault(); }}>
+                    <i class="fa fa-eye"></i>
+                  </a> | 
+                  <a href="" onClick={ (e) => { this.editState(app.key, app.app, app.username, app.password); this.openModal(); e.preventDefault(); }}>
+                    <i class="fa fa-dot-circle-o"></i>
+                  </a> | 
+                  <a href="" onClick={ (e) => { UserStore.deleteApp(app.key); e.preventDefault(); }}>
+                    <i class="fa fa-close"></i>
+                  </a>
                 </th>
               </tr>
              ) }
@@ -224,7 +242,7 @@ Modal.setAppElement('#root')
           style={customStyles}
           contentLabel="Modal Check Password"
         >
-          <form onSubmit={(e) => {this.checkOpenPwd(); this.closeModalCheckPwd(); e.preventDefault();}}>
+          <form onSubmit={(e) => {this.checkOpenPwd(this.state.password); this.closeModalCheckPwd(); e.preventDefault();}}>
             <div className="container">
               <label><b>Password</b></label>
               <input type="password" placeholder="Your password" name="password" value={ this.state.password } onChange={ this.handleChange } required/>
@@ -232,7 +250,7 @@ Modal.setAppElement('#root')
             </div>
           </form>
           <hr/>
-          <button onClick={this.closeModalCheckPwd}>close</button>
+          <button onClick={(e) => { this.closeModalCheckPwd(); }}>close</button>
         </Modal>
       </div>
     );
