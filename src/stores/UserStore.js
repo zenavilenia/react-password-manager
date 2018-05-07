@@ -47,6 +47,7 @@ class UserStore {
   }
 
   checkPassword = (password, index) => {
+    console.log('masuk check password')
     db.ref('users').once('value', (snapshot) => {
       snapshot.forEach(element => {
         const email = localStorage.getItem('email')

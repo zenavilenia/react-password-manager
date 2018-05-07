@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import Modal from 'react-modal';
 
 import AddApp from './AddApp.jsx';
 import UserStore from '../stores/UserStore';
@@ -17,8 +16,6 @@ const customStyles = {
   }
 };
 
-Modal.setAppElement('.App')
-
 @inject('UserStore')
 @observer class TablePasswordManager extends Component {
   constructor() {
@@ -31,6 +28,7 @@ Modal.setAppElement('.App')
       username: '',
       password: '',
       index: '',
+      createdAt: '',
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -45,9 +43,9 @@ Modal.setAppElement('.App')
     })
   }
 
-  editState(key, app, username, password) {
+  editState(key, app, username, password, createdAt) {
     this.setState({
-      key, app, username, password
+      key, app, username, password, createdAt
     })
   }
 
@@ -103,6 +101,7 @@ Modal.setAppElement('.App')
       app: this.state.app,
       username: this.state.username,
       password: this.state.password,
+      createdAt: this.state.createdAt,
     }
     UserStore.editApp(this.state.key, {...editThisApp});
     UserStore.getAppList();
@@ -145,10 +144,13 @@ Modal.setAppElement('.App')
   }
 
   checkOpenPwd = (pwd) => {
+    console.log(pwd)
+    console.log('testing', this.state.index)
     UserStore.checkPassword(pwd, this.state.index)
   }
 
   changeIndex(i) {
+    console.log('masuk change index')
     this.setState({
       index: i
     })
@@ -188,11 +190,11 @@ Modal.setAppElement('.App')
                 <th> { this.dateFormat( app.createdAt ) } </th>
                 <th> { this.dateFormat( app.updatedAt ) } </th>
                 <th>
-                  <a href="" onClick={ (e) => { this.changeIndex(i); this.openModalCheckPwd(); e.preventDefault(); }}>
+                  <a onClick={ (e) => { this.changeIndex(i); }} href="#open-modal">
                     <i class="fa fa-eye"></i>
                   </a> | 
-                  <a href="" onClick={ (e) => { this.editState(app.key, app.app, app.username, app.password); this.openModal(); e.preventDefault(); }}>
-                    <i class="fa fa-dot-circle-o"></i>
+                  <a onClick={ (e) => { this.editState(app.key, app.app, app.username, app.password, app.createdAt); }} href="#open-modal-edit-app">
+                  <i class="fa fa-dot-circle-o"></i>
                   </a> | 
                   <a href="" onClick={ (e) => { UserStore.deleteApp(app.key); e.preventDefault(); }}>
                     <i class="fa fa-close"></i>
@@ -203,15 +205,24 @@ Modal.setAppElement('.App')
           </tbody>
         </table>
 
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal}
-          onRequestClose={this.closeModal}
-          style={customStyles}
-          contentLabel="Example Modal"
-        >
-          <h2 ref={subtitle => this.subtitle = subtitle}>Edit App</h2>
-          <form onSubmit={(e) => {this.editApp(); this.closeModal(); e.preventDefault();}}>
+        {/* Modal with css*/}
+        <div id="open-modal" class="modal-window">
+          <div>
+            <a href="#modal-close" title="Close" class="modal-close">Close</a>
+            <div className="container">
+              <label><b>Password</b></label>
+              <input type="password" placeholder="Your password" name="password" value={ this.state.password } onChange={ this.handleChange } required/>
+              <button type="button" onClick={() => {this.checkOpenPwd(this.state.password);}}>
+                <a href="#modal-close" title="Close">Show Password</a>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Modal edit app*/}
+        <div id="open-modal-edit-app" class="modal-edit-app-window">
+          <div>
+            <a href="#modal-edit-app-close" title="Close" class="modal-edit-app-close">Close</a>
             <div className="container">
               <label><b>App</b></label>
               <input type="text" placeholder="App's name" name="app" value={ this.state.app } onChange={ this.handleChange } required/>
@@ -219,39 +230,21 @@ Modal.setAppElement('.App')
               <input type="text" placeholder="Your username" name="username" value={ this.state.username } onChange={ this.handleChange } required/>
               <label><b>Password</b></label>
               <input type="password" placeholder="Your password" name="password" value={ this.state.password } onChange={ this.handleChangePassword } required/>
-              <button type="submit">Edit App</button>
+              <button type="button" onClick={() => {this.editApp();}}>
+                <a href="#modal-edit-app-close" title="Close">Edit App</a>
+              </button>
             </div>
-          </form>
-          <hr/>
-          <div>
-            <p>Password Must Contain: </p>
-            <div id="uppercase" className="invalid">Upper Case</div>
-            <div id="lowercase" className="invalid">Lower Case</div>
-            <div id="specialcase" className="invalid">Special Character</div>
-            <div id="number" className="invalid">At least 1 number</div>
-            <div id="minimaldigit" className="invalid">Minimal 6 Digits</div>
+            <hr/>
+            <div>
+              <p>Password Must Contain: </p>
+              <div id="uppercase" className="invalid">Upper Case</div>
+              <div id="lowercase" className="invalid">Lower Case</div>
+              <div id="specialcase" className="invalid">Special Character</div>
+              <div id="number" className="invalid">At least 1 number</div>
+              <div id="minimaldigit" className="invalid">Minimal 6 Digits</div>
+            </div>
           </div>
-          <hr/>
-          <button onClick={this.closeModal}>close</button>
-        </Modal>
-
-        <Modal
-          isOpen={this.state.modalCheckPwdIsOpen}
-          onAfterOpen={this.afterOpenModalCheckPwd}
-          onRequestClose={this.closeModalCheckPwd}
-          style={customStyles}
-          contentLabel="Modal Check Password"
-        >
-          <form onSubmit={(e) => {this.checkOpenPwd(this.state.password); this.closeModalCheckPwd(); e.preventDefault();}}>
-            <div className="container">
-              <label><b>Password</b></label>
-              <input type="password" placeholder="Your password" name="password" value={ this.state.password } onChange={ this.handleChange } required/>
-              <button type="submit">Show Password</button>
-            </div>
-          </form>
-          <hr/>
-          <button onClick={(e) => { this.closeModalCheckPwd(); }}>close</button>
-        </Modal>
+        </div>
       </div>
     );
   }
