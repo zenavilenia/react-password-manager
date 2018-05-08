@@ -106,7 +106,64 @@ class UserStore {
     console.log('ini obj', obj)
     db.ref('users').push({...obj})
 
-    // this.login(objUser)
+    this.login(objUser)
+  }
+
+  handleChange(that) {
+    return function handleChangeInside(e) {
+      that.setState({
+        [e.target.name]: e.target.value,
+      })
+    }
+  }
+
+  handleChangePassword = (that) => {
+    return function handleChangePasswordInside(e) {
+      that.setState({
+        [e.target.name]: e.target.value,
+      }, () => {
+        let uppercase = document.getElementById('uppercase');
+        let lowercase = document.getElementById('lowercase');
+        let specialcase = document.getElementById('specialcase');
+        let number = document.getElementById('number');
+        let minimaldigit = document.getElementById('minimaldigit');
+        
+        let upperCaseTest = /[A-Z]/g;
+        if (that.state.password.match(upperCaseTest)) { 
+          uppercase.classList = "valid";
+        } else {
+          uppercase.classList = "invalid";
+        }
+  
+        let lowerCaseTest = /[a-z]/g;
+        if (that.state.password.match(lowerCaseTest)) { 
+          lowercase.classList = "valid";
+        } else {
+          lowercase.classList = "invalid";
+        }
+  
+        let specialCaseTest = /[$&+,:;=?@#|'<>.^*()%!-]/g;
+        if (that.state.password.match(specialCaseTest)) { 
+          specialcase.classList = "valid";
+        } else {
+          specialcase.classList = "invalid";
+        }
+  
+        let numberTest = /[0-9]/g;
+        if (that.state.password.match(numberTest)) { 
+          number.classList = "valid";
+        } else {
+          number.classList = "invalid";
+        }
+  
+        let minimalDigitTest = /^.{6,}$/g;
+        if (that.state.password.match(minimalDigitTest)) { 
+          minimaldigit.classList = "valid";
+        } else {
+          minimaldigit.classList = "invalid";
+        }
+      })
+    }
   }
 
   @computed
