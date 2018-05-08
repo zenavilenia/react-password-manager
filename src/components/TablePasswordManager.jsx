@@ -17,8 +17,6 @@ const customStyles = {
   }
 };
 
-Modal.setAppElement('.App')
-
 @inject('UserStore')
 @observer class TablePasswordManager extends Component {
   constructor() {
@@ -30,6 +28,7 @@ Modal.setAppElement('.App')
       app: '',
       username: '',
       password: '',
+      createdAt: '',
       index: '',
     }
 
@@ -45,22 +44,22 @@ Modal.setAppElement('.App')
     })
   }
 
-  editState(key, app, username, password) {
+  editState(key, app, username, password, createdAt) {
     this.setState({
-      key, app, username, password
+      key, app, username, password, createdAt
     })
   }
 
   handleChangePassword = (e) => {
-    let uppercase = document.getElementById('uppercase');
-    let lowercase = document.getElementById('lowercase');
-    let specialcase = document.getElementById('specialcase');
-    let number = document.getElementById('number');
-    let minimaldigit = document.getElementById('minimaldigit');
-
     this.setState({
       [e.target.name]: e.target.value,
     }, () => {
+      let uppercase = document.getElementById('uppercase');
+      let lowercase = document.getElementById('lowercase');
+      let specialcase = document.getElementById('specialcase');
+      let number = document.getElementById('number');
+      let minimaldigit = document.getElementById('minimaldigit');
+
       let upperCaseTest = /[A-Z]/g;
       if (this.state.password.match(upperCaseTest)) { 
         uppercase.classList = "valid";
@@ -103,6 +102,7 @@ Modal.setAppElement('.App')
       app: this.state.app,
       username: this.state.username,
       password: this.state.password,
+      createdAt: this.state.createdAt,
     }
     UserStore.editApp(this.state.key, {...editThisApp});
     UserStore.getAppList();
@@ -110,6 +110,9 @@ Modal.setAppElement('.App')
 
   componentDidMount() {
     UserStore.getAppList()
+    if (typeof(window) !== 'undefined') {
+        Modal.setAppElement('body')
+    }
   }
 
   showPassword(appkey, pwd) {
@@ -136,8 +139,6 @@ Modal.setAppElement('.App')
   }
 
   afterOpenModalCheckPwd() {
-    // references are now sync'd and can be accessed.
-    // this.subtitle.style.color = '#f00';
   }
 
   closeModalCheckPwd() {
@@ -191,7 +192,7 @@ Modal.setAppElement('.App')
                   <a href="" onClick={ (e) => { this.changeIndex(i); this.openModalCheckPwd(); e.preventDefault(); }}>
                     <i class="fa fa-eye"></i>
                   </a> | 
-                  <a href="" onClick={ (e) => { this.editState(app.key, app.app, app.username, app.password); this.openModal(); e.preventDefault(); }}>
+                  <a href="" onClick={ (e) => { this.editState(app.key, app.app, app.username, app.password, app.createdAt); this.openModal(); e.preventDefault(); }}>
                     <i class="fa fa-dot-circle-o"></i>
                   </a> | 
                   <a href="" onClick={ (e) => { UserStore.deleteApp(app.key); e.preventDefault(); }}>

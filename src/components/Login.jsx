@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { inject, observer } from 'mobx-react';
 
 import UserStore from '../stores/UserStore';
 import './Login.css';
 
-class Login extends Component {
+@inject('UserStore')
+@observer class Login extends Component {
   constructor() {
     super();
     this.state = {
@@ -11,7 +13,7 @@ class Login extends Component {
       password: ''
     }
 
-    this.handleChange = this.handleChange.bind(this)
+    this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(e) {
@@ -32,7 +34,7 @@ class Login extends Component {
   render() {
     return (
       <div>
-        <form onSubmit={(e) => {this.login(); e.preventDefault();}}>
+        <form onSubmit={(e) => {this.login();}}>
           <div className="container">
             <label><b>Email</b></label>
             <input type="text" placeholder="Enter your email" name="email" value={ this.state.email } onChange={ this.handleChange } required/>

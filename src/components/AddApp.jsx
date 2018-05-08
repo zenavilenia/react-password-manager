@@ -36,52 +36,56 @@ class AddApp extends Component {
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value,
+    }, () => {
+      this.handleChangePassword()
     })
   }
 
   handleChangePassword = (e) => {
-    this.handleChange(e);
+    this.setState({
+      [e.target.name]: e.target.value,
+    }, () => {
+      let uppercase = document.getElementById('uppercase');
+      let lowercase = document.getElementById('lowercase');
+      let specialcase = document.getElementById('specialcase');
+      let number = document.getElementById('number');
+      let minimaldigit = document.getElementById('minimaldigit');
+      
+      let upperCaseTest = /[A-Z]/g;
+      if (this.state.password.match(upperCaseTest)) { 
+        uppercase.classList = "valid";
+      } else {
+        uppercase.classList = "invalid";
+      }
 
-    let uppercase = document.getElementById('uppercase');
-    let lowercase = document.getElementById('lowercase');
-    let specialcase = document.getElementById('specialcase');
-    let number = document.getElementById('number');
-    let minimaldigit = document.getElementById('minimaldigit');
-    
-    let upperCaseTest = /[A-Z]/g;
-    if (this.state.password.match(upperCaseTest)) { 
-      uppercase.classList = "valid";
-    } else {
-      uppercase.classList = "invalid";
-    }
+      let lowerCaseTest = /[a-z]/g;
+      if (this.state.password.match(lowerCaseTest)) { 
+        lowercase.classList = "valid";
+      } else {
+        lowercase.classList = "invalid";
+      }
 
-    let lowerCaseTest = /[a-z]/g;
-    if (this.state.password.match(lowerCaseTest)) { 
-      lowercase.classList = "valid";
-    } else {
-      lowercase.classList = "invalid";
-    }
+      let specialCaseTest = /[$&+,:;=?@#|'<>.^*()%!-]/g;
+      if (this.state.password.match(specialCaseTest)) { 
+        specialcase.classList = "valid";
+      } else {
+        specialcase.classList = "invalid";
+      }
 
-    let specialCaseTest = /[$&+,:;=?@#|'<>.^*()%!-]/g;
-    if (this.state.password.match(specialCaseTest)) { 
-      specialcase.classList = "valid";
-    } else {
-      specialcase.classList = "invalid";
-    }
+      let numberTest = /[0-9]/g;
+      if (this.state.password.match(numberTest)) { 
+        number.classList = "valid";
+      } else {
+        number.classList = "invalid";
+      }
 
-    let numberTest = /[0-9]/g;
-    if (this.state.password.match(numberTest)) { 
-      number.classList = "valid";
-    } else {
-      number.classList = "invalid";
-    }
-
-    let minimalDigitTest = /^.{6,}$/g;
-    if (this.state.password.match(minimalDigitTest)) { 
-      minimaldigit.classList = "valid";
-    } else {
-      minimaldigit.classList = "invalid";
-    }
+      let minimalDigitTest = /^.{6,}$/g;
+      if (this.state.password.match(minimalDigitTest)) { 
+        minimaldigit.classList = "valid";
+      } else {
+        minimaldigit.classList = "invalid";
+      }
+    })
   }
 
   openModal() {
@@ -89,7 +93,6 @@ class AddApp extends Component {
   }
 
   afterOpenModal() {
-    // references are now sync'd and can be accessed.
     this.subtitle.style.color = '#f00';
   }
 
@@ -131,7 +134,7 @@ class AddApp extends Component {
               <label><b>Username</b></label>
               <input type="text" placeholder="Your username" name="username" value={ this.state.username } onChange={ this.handleChange } required/>
               <label><b>Password</b></label>
-              <input type="password" placeholder="Your password" name="password" value={ this.state.password } onChange={ this.handleChangePassword } required/>
+              <input type="password" placeholder="Your password" name="password" value={ this.state.password } onChange={ this.handleChange } required/>
               <button type="submit">Add App</button>
             </div>
           </form>

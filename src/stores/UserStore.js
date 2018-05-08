@@ -34,7 +34,6 @@ class UserStore {
   }
 
   getAppList = () => {
-    console.log('get app list')
     const key = localStorage.getItem('key');
     db.ref(`users/${key}/apps`).once('value', (snapshot) => {
       this.apps = []
@@ -52,7 +51,6 @@ class UserStore {
         const email = localStorage.getItem('email')
         const user = element.val();
         if (user.email === email && user.password === password) {
-          console.log(element)
           this.showPassword(index);
         }
       })
@@ -65,16 +63,12 @@ class UserStore {
 
   editApp = (appkey, objApp) => {
     const key = localStorage.getItem('key');
-    console.log('key', appkey)
-    console.log('obk', objApp)
     objApp.updatedAt = Firebase.database.ServerValue.TIMESTAMP;
     db.ref(`users/${key}/apps/${appkey}`).set({ ...objApp })
   }
 
   deleteApp = (appkey) => {
-    console.log('masuk')
     const key = localStorage.getItem('key');
-    console.log(appkey)
     db.ref(`users/${key}/apps/${appkey}`).remove()
     this.getAppList();
   }
@@ -84,7 +78,6 @@ class UserStore {
       snapshot.forEach(element => {
         const user = element.val();
         if (user.email === objUser.email && user.password === objUser.password) {
-          console.log(element);
           localStorage.setItem('key', element.key);
           localStorage.setItem('email', user.email);
           this.user = { ...objUser };
@@ -94,15 +87,12 @@ class UserStore {
   }
 
   register = (objUser) => {
-    console.log(objUser)
-
     const obj = {
       ...objUser,
       createdAt: Firebase.database.ServerValue.TIMESTAMP,
       updatedAt: Firebase.database.ServerValue.TIMESTAMP,
       apps: []
     }
-    console.log('ini obj', obj)
     db.ref('users').push({...obj})
 
     // this.login(objUser)
