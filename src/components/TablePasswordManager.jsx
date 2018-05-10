@@ -72,14 +72,14 @@ import './TablePasswordManager.css'
         <Table that={this}/>
 
         {/* Modal with css*/}
-        <div id="open-modal" class="modal-window">
+        <div id="open-modal-password" class="modal-password-window">
           <div>
-            <a href="#modal-close" title="Close" class="modal-close">Close</a>
+            <a href="#modal-password-close" title="Close" class="modal-close">Close</a>
             <div className="container">
               <label><b>Password</b></label>
               <input type="password" placeholder="Your password" name="password" value={ this.state.password } onChange={ UserStore.handleChange(this) } required/>
               <button type="button" onClick={() => {this.checkOpenPwd(this.state.password);}}>
-                <a href="#modal-close" title="Close">Show Password</a>
+                <a href="#modal-password-close" title="Close">Show Password</a>
               </button>
             </div>
           </div>

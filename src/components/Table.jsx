@@ -29,7 +29,7 @@ import UserStore from '../stores/UserStore';
               <th> { this.props.that.dateFormat( app.createdAt ) } </th>
               <th> { this.props.that.dateFormat( app.updatedAt ) } </th>
               <th>
-                <a onClick={ (e) => { this.props.that.changeIndex(i); }} href="#open-modal">
+                <a onClick={ (e) => { this.props.that.changeIndex(i); }} href="#open-modal-password">
                   <i class="fa fa-eye"></i>
                 </a> | 
                 <a onClick={ (e) => { this.props.that.editState(app.key, app.app, app.username, app.password, app.createdAt); }} href="#open-modal-edit-app">

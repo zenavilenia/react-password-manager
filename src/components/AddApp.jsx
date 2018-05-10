@@ -44,7 +44,7 @@ class AddApp extends Component {
         <div id="open-modal" class="modal-window">
           <div>
             <a href="#modal-close" title="Close" class="modal-close">Close</a>
-            <form onSubmit={(e) => {this.addApp(); this.closeModal(); e.preventDefault();}}>
+            <form onSubmit={(e) => {this.addApp(); e.preventDefault();}}>
               <div className="container">
                 <label><b>App</b></label>
                 <input type="text" placeholder="App's name" name="app" value={ this.state.app } onChange={ UserStore.handleChange(this) } required/>
