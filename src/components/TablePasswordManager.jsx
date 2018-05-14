@@ -6,7 +6,6 @@ import Table from './Table.jsx';
 import UserStore from '../stores/UserStore';
 import './TablePasswordManager.css'
 
-@inject('UserStore')
 @observer class TablePasswordManager extends Component {
   constructor() {
     super();

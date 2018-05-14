@@ -9,7 +9,6 @@ class AddApp extends Component {
     super();
 
     this.state = {
-      modalIsOpen: false,
       app: '',
       username: '',
       password: '',
@@ -47,11 +46,11 @@ class AddApp extends Component {
             <form onSubmit={(e) => {this.addApp(); e.preventDefault();}}>
               <div className="container">
                 <label><b>App</b></label>
-                <input type="text" placeholder="App's name" name="app" value={ this.state.app } onChange={ UserStore.handleChange(this) } required/>
+                <input type="text" placeholder="App's name" name="app" id="appId" value={ this.state.app } onChange={ UserStore.handleChange(this) } required/>
                 <label><b>Username</b></label>
-                <input type="text" placeholder="Your username" name="username" value={ this.state.username } onChange={ UserStore.handleChange(this) } required/>
+                <input type="text" placeholder="Your username" name="username" id="usernameId" value={ this.state.username } onChange={ UserStore.handleChange(this) } required/>
                 <label><b>Password</b></label>
-                <input type="password" placeholder="Your password" name="password" value={ this.state.password } onChange={ UserStore.handleChangePassword(this) } required/>
+                <input type="password" placeholder="Your password" name="password" id="passwordId" value={ this.state.password } onChange={ UserStore.handleChangePassword(this) } required/>
                 <button type="submit">Add App</button>
               </div>
             </form>

@@ -1,0 +1,205 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Login/> should have component form, div, button, input, label 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <div
+      className="container"
+    >
+      <label>
+        <b>
+          Email
+        </b>
+      </label>
+      <input
+        name="email"
+        onChange={[Function]}
+        placeholder="Enter your email"
+        required={true}
+        type="text"
+        value=""
+      />
+      <label>
+        <b>
+          Password
+        </b>
+      </label>
+      <input
+        name="password"
+        onChange={[Function]}
+        placeholder="Enter Password"
+        required={true}
+        type="password"
+        value=""
+      />
+      <button
+        type="submit"
+      >
+        Login
+      </button>
+      <hr />
+      <a
+        href=""
+        onClick={[Function]}
+      >
+        Don't have account? Register here
+      </a>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`<Login/> should have component form, div, button, input, label 2`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <div
+      className="container"
+    >
+      <label>
+        <b>
+          Email
+        </b>
+      </label>
+      <input
+        name="email"
+        onChange={[Function]}
+        placeholder="Enter your email"
+        required={true}
+        type="text"
+        value=""
+      />
+      <label>
+        <b>
+          Password
+        </b>
+      </label>
+      <input
+        name="password"
+        onChange={[Function]}
+        placeholder="Enter Password"
+        required={true}
+        type="password"
+        value=""
+      />
+      <button
+        type="submit"
+      >
+        Login
+      </button>
+      <hr />
+      <a
+        href=""
+        onClick={[Function]}
+      >
+        Don't have account? Register here
+      </a>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`<Register/> should have component form, div, button, input, label 1`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <div
+      className="container"
+    >
+      <label>
+        <b>
+          Email
+        </b>
+      </label>
+      <input
+        name="email"
+        onChange={[Function]}
+        placeholder="Enter your email"
+        required={true}
+        type="text"
+        value=""
+      />
+      <label>
+        <b>
+          Password
+        </b>
+      </label>
+      <input
+        name="password"
+        onChange={[Function]}
+        placeholder="Enter Password"
+        required={true}
+        type="password"
+        value=""
+      />
+      <button
+        type="submit"
+      >
+        Register
+      </button>
+      <hr />
+      <a
+        href=""
+        onClick={[Function]}
+      >
+        Already have account? Login here
+      </a>
+    </div>
+  </form>
+</div>
+`;
+
+exports[`<Register/> should have component form, div, button, input, label 2`] = `
+<div>
+  <form
+    onSubmit={[Function]}
+  >
+    <div
+      className="container"
+    >
+      <label>
+        <b>
+          Email
+        </b>
+      </label>
+      <input
+        name="email"
+        onChange={[Function]}
+        placeholder="Enter your email"
+        required={true}
+        type="text"
+        value=""
+      />
+      <label>
+        <b>
+          Password
+        </b>
+      </label>
+      <input
+        name="password"
+        onChange={[Function]}
+        placeholder="Enter Password"
+        required={true}
+        type="password"
+        value=""
+      />
+      <button
+        type="submit"
+      >
+        Register
+      </button>
+      <hr />
+      <a
+        href=""
+        onClick={[Function]}
+      >
+        Already have account? Login here
+      </a>
+    </div>
+  </form>
+</div>
+`;
